@@ -94,11 +94,11 @@ int main(){
         BeginDrawing();
             ClearBackground(BLACK);
             SetTargetFPS(30);
-
+            
             // scoreboard display
             DrawText(TextFormat("Score: %d", score), 10, 10, 20, WHITE);
             DrawText(TextFormat("High Score: %d", high_score), screenWidth - 240, 10, 20, WHITE);
-
+            
             // player, ball and pieces display
             DrawRectangle(player.x, player.y, player.w, player.h, player.c);
             DrawCircle(ball.x, ball.y, ball.r, ball.c);
