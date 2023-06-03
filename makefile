@@ -2,12 +2,17 @@ COMP = gcc
 FLAGS = -Wall -Wextra -pedantic
 
 # Target files
-BREAKOUT = bkout.c
-PONG = pong.c
+WINDOW = ./projects/window.c
+BREAKOUT = ./projects/bkout.c
+PONG = ./projects/pong.c
 
 default:
-	$(COMP) -o prog $(BREAKOUT) -I/usr/local/include -L/usr/local/lib -lraylib -lGL -lm
-	./prog
+	@echo You can use make:
+	@echo break for breakout
+	@echo pong for pong 
+
+	@$(COMP) -o prog $(WINDOW) -I/usr/local/include -L/usr/local/lib -lraylib -lGL -lm
+	@./prog
 
 pong:
 	@$(COMP) -o prog $(PONG) -I/usr/local/include -L/usr/local/lib -lraylib -lGL -lm
