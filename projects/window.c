@@ -5,7 +5,7 @@ int main(){
     while(!WindowShouldClose()){
         BeginDrawing();
             ClearBackground(BLACK);
-            DrawText("You can use make:", 150, 150, 30, WHITE);
+            DrawText("You can use make followed by", 50, 150, 30, WHITE);
             DrawText("break for breakout", 150, 200, 30, WHITE);
             DrawText("pong for pong", 150, 250, 30, WHITE);
         EndDrawing();

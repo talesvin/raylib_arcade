@@ -7,10 +7,6 @@ BREAKOUT = ./projects/bkout.c
 PONG = ./projects/pong.c
 
 default:
-	@echo You can use make:
-	@echo break for breakout
-	@echo pong for pong 
-
 	@$(COMP) -o prog $(WINDOW) -I/usr/local/include -L/usr/local/lib -lraylib -lGL -lm
 	@./prog
 
