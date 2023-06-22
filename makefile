@@ -7,6 +7,7 @@ BREAKOUT = ./projects/bkout.c
 PONG = ./projects/pong.c
 
 default:
+	@clang-format -style=file projects/*.c -i
 	@$(COMP) -o prog $(WINDOW) -I/usr/local/include -L/usr/local/lib -lraylib -lGL -lm
 	@./prog
 
