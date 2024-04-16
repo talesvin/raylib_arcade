@@ -1,23 +1,23 @@
 #include <raylib.h>
 
-const char *title = "Pong";
-const int screenWidth = 1600;
-const int screenHeight = 900;
+const int pongWidth = 1600;
+const int pongHeight = 900;
+const char *pongTitle = "Pong";
 
-typedef struct Player {
+typedef struct PongPlayer {
     int posx;
     int posy;
     int width;
     int height;
-} Player;
+} PongPlayer;
 
-typedef struct Ball {
+typedef struct PongBall {
     int radius;
     int posx;
     int posy;
     int x_speed;
     int y_speed;
-} Ball;
+} PongBall;
 
 int ballSpeed(int min, int max, bool spd) {
     int value = GetRandomValue(min, max);
@@ -30,19 +30,19 @@ int ballSpeed(int min, int max, bool spd) {
     }
 }
 
-Ball updateBall() {
-    Ball ball = {14, screenWidth / 2, screenHeight / 2, ballSpeed(-8, 8, true),
-                 ballSpeed(-8, 8, false)};
+PongBall updatePongBall() {
+    PongBall ball = {14, pongWidth / 2, pongHeight / 2, ballSpeed(-8, 8, true),
+                     ballSpeed(-8, 8, false)};
     return ball;
 }
 
-int main() {
-    InitWindow(screenWidth, screenHeight, title);
+void pong() {
+    InitWindow(pongWidth, pongHeight, pongTitle);
 
-    Player player1 = {5, screenHeight / 2, 20, 100};
-    Player player2 = {screenWidth - 25, screenHeight / 2, 20, 100};
+    PongPlayer player1 = {5, pongHeight / 2, 20, 100};
+    PongPlayer player2 = {pongWidth - 25, pongHeight / 2, 20, 100};
 
-    Ball ball = updateBall();
+    PongBall ball = updatePongBall();
     int left = 0;
     int right = 0;
 
@@ -51,7 +51,7 @@ int main() {
         ClearBackground(BLACK);
         SetTargetFPS(30);
 
-        DrawLine(screenWidth / 2, 0, screenWidth / 2, screenHeight, GRAY);
+        DrawLine(pongWidth / 2, 0, pongWidth / 2, pongHeight, GRAY);
         DrawRectangle(player1.posx, player1.posy, player1.width, player1.height,
                       WHITE);
         DrawRectangle(player2.posx, player2.posy, player2.width, player2.height,
@@ -60,14 +60,14 @@ int main() {
 
         // scoreboard
         DrawText(TextFormat("%d", left), 100, 10, 30, WHITE);
-        DrawText(TextFormat("%d", right), screenWidth - 100, 10, 30, WHITE);
+        DrawText(TextFormat("%d", right), pongWidth - 100, 10, 30, WHITE);
 
         // controls
         // player1
         if (IsKeyDown(KEY_W) && player1.posy > 0) {
             player1.posy -= 10;
         } else if (IsKeyDown(KEY_S) &&
-                   player1.posy + player1.height < screenHeight) {
+                   player1.posy + player1.height < pongHeight) {
             player1.posy += 10;
         }
 
@@ -75,7 +75,7 @@ int main() {
         if (IsKeyDown(KEY_UP) && player2.posy > 0) {
             player2.posy -= 10;
         } else if (IsKeyDown(KEY_DOWN) &&
-                   player2.posy + player2.height < screenHeight) {
+                   player2.posy + player2.height < pongHeight) {
             player2.posy += 10;
         }
 
@@ -83,7 +83,7 @@ int main() {
         ball.posx = ball.posx + ball.x_speed;
         ball.posy = ball.posy + ball.y_speed;
         if (ball.posy - ball.radius < 0 ||
-            ball.posy + ball.radius > screenHeight) {
+            ball.posy + ball.radius > pongHeight) {
             ball.y_speed *= -1;
         }
 
@@ -113,14 +113,13 @@ int main() {
 
         // reset ball and update scoreboard
         if (ball.posx < 0) {
-            ball = updateBall();
+            ball = updatePongBall();
             right++;
-        } else if (ball.posx > screenWidth) {
-            ball = updateBall();
+        } else if (ball.posx > pongWidth) {
+            ball = updatePongBall();
             left++;
         }
         EndDrawing();
     }
     CloseWindow();
-    return 0;
 }

@@ -1,10 +1,10 @@
 #include <raylib.h>
 
-const int screenWidth = 800;
-const int screenHeight = 800;
-const char *title = "Breakout";
+const int breakoutWidth = 800;
+const int breakoutHeight = 800;
+const char *breakoutTitle = "Breakout";
 
-struct Player {
+struct BreakoutPlayer {
     int x;
     int y;
     int w;
@@ -12,7 +12,7 @@ struct Player {
     Color c;
 };
 
-struct Ball {
+struct BreakoutBall {
     int x;
     int y;
     int r;
@@ -41,10 +41,12 @@ Rect updatePieces(int l, int p, Rect pieces[l][p], int pos_p, int pos_l) {
         for (int j = 0; j < p; j++) {
             if (j != 0)
                 pos_p = pieces[i][j - 1].x + 70;
+
             pieces[i][j].x = pos_p;
             pieces[i][j].y = pos_l;
             pieces[i][j].width = 60;
             pieces[i][j].height = 20;
+
             if (i == 0 || i == 4)
                 pieces[i][j].color = YELLOW;
             else if (i == 1 || i == 5)
@@ -62,18 +64,20 @@ Rect updatePieces(int l, int p, Rect pieces[l][p], int pos_p, int pos_l) {
     return pieces[l][p];
 }
 
-struct Ball restartBall(struct Ball b) {
-    b.x = screenWidth / 2;
-    b.y = screenHeight / 2 - 100;
+struct BreakoutBall restartBreakoutBall(struct BreakoutBall b) {
+    b.x = breakoutWidth / 2;
+    b.y = breakoutHeight / 2 - 100;
     b.x_speed = ballDirection(-15, 15);
     b.y_speed = 10;
     return b;
 }
 
-int main() {
-    InitWindow(screenWidth, screenHeight, title);
-    struct Player player = {screenWidth / 2, screenHeight - 30, 100, 20, GRAY};
-    struct Ball ball = {screenWidth / 2, screenHeight / 2, 14, RAYWHITE, 0, 10};
+void breakout() {
+    InitWindow(breakoutWidth, breakoutHeight, breakoutTitle);
+    struct BreakoutPlayer player = {breakoutWidth / 2, breakoutHeight - 30, 100,
+                                    20, GRAY};
+    struct BreakoutBall ball = {
+        breakoutWidth / 2, breakoutHeight / 2, 14, RAYWHITE, 0, 10};
     ball.x_speed = ballDirection(-15, 15);
 
     // scoreboard
@@ -97,7 +101,7 @@ int main() {
 
         // scoreboard display
         DrawText(TextFormat("Score: %d", score), 10, 10, 20, WHITE);
-        DrawText(TextFormat("High Score: %d", high_score), screenWidth - 240,
+        DrawText(TextFormat("High Score: %d", high_score), breakoutWidth - 240,
                  10, 20, WHITE);
 
         // player, ball and pieces display
@@ -112,7 +116,7 @@ int main() {
         // movement
         if (player.x > 0 && IsKeyDown(KEY_A))
             player.x -= 20;
-        else if (player.x <= screenWidth - 110 && IsKeyDown(KEY_D))
+        else if (player.x <= breakoutWidth - 110 && IsKeyDown(KEY_D))
             player.x += 20;
 
         ball.x = ball.x + ball.x_speed;
@@ -141,11 +145,11 @@ int main() {
         }
 
         int max_score = 8800; // highest score is 8800
-        if (ball.y > screenHeight || score == max_score) {
+        if (ball.y > breakoutHeight || score == max_score) {
             score = 0;
             updatePieces(lines, line_pieces, pieces, piece_pos, line_pos);
-            ball = restartBall(ball);
-        } else if (ball.x < 0 || ball.x > screenWidth) {
+            ball = restartBreakoutBall(ball);
+        } else if (ball.x < 0 || ball.x > breakoutWidth) {
             ball.x_speed *= -1;
         } else if (ball.y < 0) {
             ball.y_speed *= -1;
@@ -153,5 +157,4 @@ int main() {
         EndDrawing();
     }
     CloseWindow();
-    return 0;
 }
